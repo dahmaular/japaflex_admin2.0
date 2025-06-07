@@ -20,6 +20,7 @@ import SuspendedUsers from "./pages/dashboard/userManagement/suspendedUsers";
 import CreateAdmin from "./pages/dashboard/adminManagement/createAdmin";
 import CreateRoles from "./pages/dashboard/adminManagement/rolePer";
 import UserProfile from "./pages/dashboard/userManagement/userProfile";
+import AdsManagement from "./pages/dashboard/adsManagement";
 
 function App() {
   return (
@@ -74,7 +75,8 @@ function App() {
               {/* Other main routes */}
               <Route
                 path="/ads-management"
-                element={<div>ADS Management</div>}
+                // element={<div>ADS Management</div>}
+                element={<AdsManagement />}
               />
               <Route
                 path="/content-management"
