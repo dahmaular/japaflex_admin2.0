@@ -1,0 +1,71 @@
+.user-analysis-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.donut-chart {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #FF5252 0% 36%,
+    #00BCD4 36% 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.donut-hole {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-hole span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.gender-legend {
+  width: 100%;
+}
+
+.gender-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.gender-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.gender-marker.male {
+  background-color: #FF5252;
+}
+
+.gender-marker.female {
+  background-color: #00BCD4;
+}
+
+.gender-label {
+  flex: 1;
+  font-size: 14px;
+}
+
+.gender-value {
+  font-weight: bold;
+  font-size: 14px;
+}

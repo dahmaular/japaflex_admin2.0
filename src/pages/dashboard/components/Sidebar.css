@@ -1,0 +1,119 @@
+.sidebar {
+    width: 240px;
+    background-color: #3A7145;
+    color: white;
+    padding: 20px 0;
+    min-height: 100vh;
+  }
+  
+  .logo-container {
+    padding: 0 20px 20px;
+  }
+  
+  .logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .navigation {
+    margin-top: 10px;
+  }
+  
+  .nav-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .nav-item {
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .nav-item.active {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-item-main {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  .icon-container svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+  }
+  
+  .nav-item span {
+    font-size: 14px;
+    flex: 1;
+  }
+  
+  .chevron {
+    font-size: 18px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    width: 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .chevron.open {
+    transform: rotate(90deg);
+  }
+  
+  .dropdown-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .nav-item.expanded .dropdown-menu {
+    max-height: 500px; /* Adjust as needed */
+  }
+  
+  .dropdown-item {
+    padding: 0;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdown-item a {
+    display: block;
+    padding: 10px 20px 10px 54px;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dropdown-item.active {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
