@@ -20,22 +20,20 @@ import SuspendedUsers from "./pages/dashboard/userManagement/suspendedUsers";
 import CreateAdmin from "./pages/dashboard/adminManagement/createAdmin";
 import CreateRoles from "./pages/dashboard/adminManagement/rolePer";
 import UserProfile from "./pages/dashboard/userManagement/userProfile";
-import AdsManagement from "./pages/dashboard/adsManagement";
+import AdsManagement from "./pages/dashboard/adsManagement/AdsManagement";
+import CreateAdd from "./pages/dashboard/adsManagement";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Routes with DashboardLayout wrapper */}
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
 
-              {/* User Management Routes */}
               <Route
                 path="/user-management/all-users"
                 element={<UserManagement />}
@@ -53,7 +51,6 @@ function App() {
                 element={<UserProfile />}
               />
 
-              {/* Admin Management */}
               <Route path="/admin-management" element={<AdminManagement />} />
               <Route
                 path="/admin-management/create"
@@ -64,7 +61,6 @@ function App() {
                 element={<CreateRoles />}
               />
 
-              {/* Features Routes */}
               <Route
                 path="/features/group-communities"
                 element={<div>Group & Communities</div>}
@@ -72,12 +68,12 @@ function App() {
               <Route path="/features/hub" element={<div>Hub</div>} />
               <Route path="/features/forum" element={<div>Forum</div>} />
 
-              {/* Other main routes */}
+              <Route path="/ads-management" element={<CreateAdd />} />
               <Route
-                path="/ads-management"
-                // element={<div>ADS Management</div>}
+                path="/ads-management/create"
                 element={<AdsManagement />}
               />
+
               <Route
                 path="/content-management"
                 element={<div>Content Management</div>}
@@ -88,7 +84,6 @@ function App() {
                 element={<div>System Settings</div>}
               />
 
-              {/* Communication Routes */}
               <Route path="/communication/email" element={<div>Email</div>} />
               <Route
                 path="/communication/notifications"
@@ -98,10 +93,8 @@ function App() {
             </Route>
           </Route>
 
-          {/* Redirect root to dashboard if authenticated, otherwise to login */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-          {/* Catch all for 404 */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
