@@ -1,3 +1,20 @@
+.headerFlex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+.headerFlex h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.headerFlex p {
+    color: #6B7684;
+    font-weight: 400
+}
+
 .createAdd {
     display: flex;
     justify-content: center;
@@ -14,4 +31,10 @@
     color: white;
     background-color: transparent;
     border: none;
+}
+
+.createAddLink {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
 }
