@@ -167,7 +167,7 @@ export default function AdvertDetails({ values, setFieldValue }: Props) {
       )}
 
       {selectedMedia === "Banner" && (
-        <label className={styles.uploadBox} htmlFor="banner-upload">
+        <label className={styles.uploadBanner} htmlFor="banner-upload">
           {values.banner ? (
             <div className={styles.imagePreview}>
               <img src={URL.createObjectURL(values.banner)} alt="banner" />
@@ -206,7 +206,7 @@ export default function AdvertDetails({ values, setFieldValue }: Props) {
       )}
 
       {selectedMedia === "Video" && (
-        <label className={styles.uploadBox} htmlFor="video-upload">
+        <label className={styles.uploadVideo} htmlFor="video-upload">
           <UploadVideo className={styles.uploadIcon} />
           <p>
             <span className={styles.greenText}>Upload</span> or drag and drop
