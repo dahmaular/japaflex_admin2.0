@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import styles from "./DemographicComponent.module.css";
 import Button from "../../../ui/components/button/button";
+import { AdFormValues } from "./formik-types/formikTypes";
+
+interface AdvertDetailsProps {
+  values: AdFormValues;
+  setFieldValue: <K extends keyof AdFormValues>(
+    field: K,
+    value: AdFormValues[K],
+    shouldValidate?: boolean
+  ) => void;
+}
 
 const GenderOptions = ["Male", "Female", "Both"];
 const AgeRanges = ["All ages", "18–25", "26–35", "35 & above"];
 const SelectedTags = ["Music", "Entertainment", "Sports"];
 
 export default function DemographicComponent({
-  handleNext,
-  handleBack,
-}: {
-  handleNext: () => void;
-  handleBack: () => void;
-}) {
+  values,
+  setFieldValue,
+}: AdvertDetailsProps) {
   const [gender, setGender] = useState("");
   const [ageRange, setAgeRange] = useState("");
 
@@ -71,14 +78,7 @@ export default function DemographicComponent({
         </div>
       </div>
 
-      <div className={styles.buttonGroup}>
-        <Button variant="outline" size="md" onClick={handleBack}>
-          Previous
-        </Button>
-        <Button variant="primary" size="md" onClick={handleNext}>
-          Next
-        </Button>
-      </div>
+      <div className={styles.buttonGroup}></div>
     </div>
   );
 }

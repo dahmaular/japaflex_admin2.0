@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { ReactComponent as CheckIcon } from "../../../assets/Ellipse1593.svg";
+
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import Button from "../../../ui/components/button/button";
 import DemographicComponent from "./DemographicComponent";
 import DurationComponent from "./DurationComponent";
-import PreviewComonent from "./PreviewComponent";
+import PreviewComponent from "./PreviewComponent";
+import AdvertDetails from "./AdvertDetails";
 import styles from "./styles.module.css";
 
 const steps = [
@@ -17,13 +21,11 @@ const steps = [
     heading: "Demographic",
     text: "kindly select your target audience",
   },
-
   {
     id: 3,
     heading: "Duration",
     text: "Select how long you want this ad to run",
   },
-
   {
     id: 4,
     heading: "Preview",
@@ -31,23 +33,12 @@ const steps = [
   },
 ];
 
-const mediaOptions = ["Single Image", "Carousel", "Banner", "Video", "Text"];
-
 export default function AdsManagement() {
   const [activeStep, setActiveStep] = useState(0);
-  const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
 
-  const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (activeStep > 0) {
-      setActiveStep((prev) => prev - 1);
-    }
-  };
+  const handleNext = () =>
+    setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
+  const handleBack = () => setActiveStep((prev) => Math.max(prev - 1, 0));
 
   return (
     <>
@@ -82,124 +73,68 @@ export default function AdsManagement() {
           </ul>
         </aside>
 
-        <main className={styles.form}>
-          {activeStep === 0 && (
-            <>
-              <div className={styles.mediaOptions}>
-                {mediaOptions.map((media) => (
-                  <label key={media} className={styles.option}>
-                    <input
-                      type="checkbox"
-                      checked={selectedMedia === media}
-                      onChange={() =>
-                        setSelectedMedia(selectedMedia === media ? null : media)
-                      }
-                    />
-                    {media}
-                  </label>
-                ))}
+        <Formik
+          initialValues={{
+            mediaType: "", // <-- changed here from [] to ""
+            title: "",
+            link: "",
+            cta: "",
+            upload: null,
+            carousel: [],
+            banner: null,
+            video: null,
+            gender: "",
+            interest: [],
+            ageRange: [],
+            days: "",
+            budget: "",
+          }}
+          validationSchema={Yup.object({})}
+          onSubmit={(values) => {
+            console.log("Final Submission", values);
+          }}
+        >
+          {({ values, setFieldValue }) => (
+            <Form className={styles.form}>
+              {activeStep === 0 && (
+                <AdvertDetails values={values} setFieldValue={setFieldValue} />
+              )}
+              {activeStep === 1 && (
+                <DemographicComponent
+                  values={values}
+                  setFieldValue={setFieldValue}
+                />
+              )}
+              {activeStep === 2 && (
+                <DurationComponent
+                  values={values}
+                  setFieldValue={setFieldValue}
+                />
+              )}
+              {activeStep === 3 && <PreviewComponent values={values} />}
+
+              <div className={styles.buttonGroup}>
+                {activeStep > 0 && (
+                  <Button
+                    onClick={handleBack}
+                    variant="outline"
+                    type="button"
+                    size="lg"
+                  >
+                    Previous
+                  </Button>
+                )}
+                {activeStep < steps.length - 1 ? (
+                  <Button onClick={handleNext} type="button" size="lg">
+                    Next
+                  </Button>
+                ) : (
+                  <Button type="submit">Submit</Button>
+                )}
               </div>
-
-              <input
-                type="text"
-                placeholder="Title"
-                className={styles.titleInput}
-              />
-
-              {selectedMedia === "Single Image" && (
-                <div className={styles.uploadBoxLeft}>
-                  <label className={styles.uploadLabel}>
-                    <input type="file" accept="image/*" />
-                    <span className={styles.plus}>+</span>
-                    <p className={styles.uploadText}>Upload a single image</p>
-                  </label>
-                </div>
-              )}
-
-              {selectedMedia === "Carousel" && (
-                <div className={styles.carouselWrapper}>
-                  <div className={styles.carousel}>
-                    {Array.from({ length: 5 }).map((_, idx) => (
-                      <label key={idx} className={styles.uploadBoxSmall}>
-                        <input type="file" accept="image/*" />
-                        <div className={styles.plus}>+</div>
-                        <p className={styles.uploadText}>Image {idx + 1}</p>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {selectedMedia === "Banner" && (
-                <div className={styles.uploadBoxFull}>
-                  <label className={styles.uploadLabel}>
-                    <input type="file" accept="image/*" />
-                    <span className={styles.plus}>+</span>
-                    <p className={styles.uploadText}>Upload a banner image</p>
-                  </label>
-                </div>
-              )}
-
-              {selectedMedia === "Video" && (
-                <div className={styles.uploadVideoBox}>
-                  <label className={styles.uploadLabel}>
-                    <input type="file" accept="video/*" />
-                    <span className={styles.videoIcon}>🎬</span>
-                    <p className={styles.uploadText}>Upload video (MP4, MOV)</p>
-                  </label>
-                </div>
-              )}
-
-              {selectedMedia === "Text" && (
-                <p className={styles.infoText}>
-                  No media upload needed for plain text.
-                </p>
-              )}
-
-              <input
-                type="url"
-                placeholder="Link"
-                className={styles.linkInput}
-              />
-
-              {selectedMedia === "Text" && (
-                <div className={styles.ctaWrapper}>
-                  <label className={styles.ctaLabel}>Call to Action</label>
-                  <input
-                    type="text"
-                    placeholder="Enter CTA here..."
-                    className={styles.ctaInput}
-                  />
-                </div>
-              )}
-
-              <div>
-                <Button
-                  variant="primary"
-                  onClick={handleNext}
-                  size="lg"
-                  className={styles.nextBtn}
-                >
-                  Next
-                </Button>
-              </div>
-            </>
+            </Form>
           )}
-
-          {activeStep === 1 && (
-            <DemographicComponent
-              handleNext={handleNext}
-              handleBack={handleBack}
-            />
-          )}
-          {activeStep === 2 && (
-            <DurationComponent
-              handleNext={handleNext}
-              handleBack={handleBack}
-            />
-          )}
-          {activeStep === 3 && <PreviewComonent handleNext={handleNext} />}
-        </main>
+        </Formik>
       </div>
     </>
   );

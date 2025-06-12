@@ -1,6 +1,16 @@
 import { useState } from "react";
 import styles from "./DurationComponent.module.css";
 import Button from "../../../ui/components/button/button";
+import { AdFormValues } from "./formik-types/formikTypes";
+
+interface AdvertDetailsProps {
+  values: AdFormValues;
+  setFieldValue: <K extends keyof AdFormValues>(
+    field: K,
+    value: AdFormValues[K],
+    shouldValidate?: boolean
+  ) => void;
+}
 
 export const daysOptions = [
   { label: "1 Day", value: 1 },
@@ -12,12 +22,9 @@ export const daysOptions = [
 ];
 
 export default function DurationComponent({
-  handleNext,
-  handleBack,
-}: {
-  handleNext: () => void;
-  handleBack: () => void;
-}) {
+  values,
+  setFieldValue,
+}: AdvertDetailsProps) {
   const [days, setDays] = useState("");
   const [budget, setBudget] = useState("");
 
@@ -55,14 +62,7 @@ export default function DurationComponent({
         <h2 className={styles.reachText}>23,000 - 30,000</h2>
       </div>
 
-      <div className={styles.buttonGroup}>
-        <Button variant="outline" onClick={handleBack}>
-          Previous
-        </Button>
-        <Button variant="primary" onClick={handleNext}>
-          Next
-        </Button>
-      </div>
+      <div className={styles.buttonGroup}></div>
     </div>
   );
 }
