@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import styles from "./DemographicComponent.module.css";
-import Button from "../../../ui/components/button/button";
 import { AdFormValues } from "./formik-types/formikTypes";
+import { useState } from "react";
 
 interface AdvertDetailsProps {
   values: AdFormValues;
@@ -12,31 +11,73 @@ interface AdvertDetailsProps {
   ) => void;
 }
 
-const GenderOptions = ["Male", "Female", "Both"];
+const GenderOptions = ["Male", "Female", "Other"];
 const AgeRanges = ["All ages", "18–25", "26–35", "35 & above"];
-const SelectedTags = ["Music", "Entertainment", "Sports"];
+const InterestOptions = [
+  "Fashion",
+  "Tech",
+  "Fitness",
+  "Travel",
+  "Music",
+  "Gaming",
+];
 
 export default function DemographicComponent({
   values,
   setFieldValue,
 }: AdvertDetailsProps) {
-  const [gender, setGender] = useState("");
-  const [ageRange, setAgeRange] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleAgeRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+
+    if (value === "All ages") {
+      if (checked) {
+        setFieldValue("ageRange", ["All ages", "18–25", "26–35", "35 & above"]);
+      } else {
+        setFieldValue("ageRange", []);
+      }
+      return;
+    }
+
+    let updated = checked
+      ? [...values.ageRange.filter((v) => v !== "All ages"), value]
+      : values.ageRange.filter((range) => range !== value);
+
+    setFieldValue("ageRange", updated);
+  };
+
+  const handleInterestSelect = (interest: string) => {
+    if (values.interest.includes(interest)) return;
+    setFieldValue("interest", [...values.interest, interest]);
+    setShowDropdown(false);
+  };
+
+  const removeInterest = (interest: string) => {
+    setFieldValue(
+      "interest",
+      values.interest.filter((item) => item !== interest)
+    );
+  };
 
   return (
     <div className={styles.formContainer}>
-      {/* Gender */}
       <div className={styles.section}>
         <p className={styles.labelUnderline}>Select Gender</p>
         <div className={styles.radioGroup}>
           {GenderOptions.map((option) => (
-            <label key={option} className={styles.radioLabel}>
+            <label
+              key={option}
+              className={`${styles.radioLabel} ${
+                values.gender === option ? styles.radioLabelSelected : ""
+              }`}
+            >
               <input
                 type="radio"
                 name="gender"
                 value={option}
-                checked={gender === option}
-                onChange={() => setGender(option)}
+                checked={values.gender === option}
+                onChange={() => setFieldValue("gender", option)}
               />
               {option}
             </label>
@@ -44,41 +85,66 @@ export default function DemographicComponent({
         </div>
       </div>
 
-      {/* Interest */}
       <div className={styles.section}>
         <label className={styles.label}>Interest</label>
-        <select className={styles.selectInput}>
-          <option>Select Interest</option>
-        </select>
+        <div className={styles.dropdownWrapper}>
+          <div
+            className={styles.dropdownTrigger}
+            onClick={() => setShowDropdown((prev) => !prev)}
+          >
+            {values.interest.length > 0
+              ? "Change Interest"
+              : "Select Interests"}
+            <span className={styles.chevron}>▾</span>
+          </div>
+          {showDropdown && (
+            <ul className={styles.dropdown}>
+              {InterestOptions.map((interest) => (
+                <li
+                  key={interest}
+                  className={styles.dropdownItem}
+                  onClick={() => handleInterestSelect(interest)}
+                >
+                  {interest}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div className={styles.tagContainer}>
-          {SelectedTags.map((tag) => (
+          {values.interest.map((tag) => (
             <span key={tag} className={styles.tag}>
               • {tag}
+              <button
+                type="button"
+                className={styles.removeBtn}
+                onClick={() => removeInterest(tag)}
+              >
+                ×
+              </button>
             </span>
           ))}
         </div>
       </div>
 
-      {/* Age Range */}
       <div className={styles.section}>
         <p className={styles.label}>Select Age Range</p>
-        <div className={styles.radioVertical}>
+        <div className={styles.checkboxVertical}>
           {AgeRanges.map((range) => (
-            <label key={range} className={styles.radioLabel}>
+            <label key={range} className={styles.checkboxLabel}>
               <input
-                type="radio"
+                type="checkbox"
                 name="ageRange"
                 value={range}
-                checked={ageRange === range}
-                onChange={() => setAgeRange(range)}
+                checked={values.ageRange.includes(range)}
+                onChange={handleAgeRangeChange}
+                className={styles.customCheckbox}
               />
               {range}
             </label>
           ))}
         </div>
       </div>
-
-      <div className={styles.buttonGroup}></div>
     </div>
   );
 }

@@ -14,9 +14,7 @@
 }
 
 .labelUnderline {
-  font-weight: 600;
-  text-decoration: underline;
-  margin-bottom: 0.5rem;
+margin-bottom: 1rem;
 }
 
 .radioGroup {
@@ -24,24 +22,93 @@
   gap: 2rem;
 }
 
-.radioVertical {
+.radioLabel,
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+
+.radioLabel input[type="radio"],
+.customCheckbox {
+  appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid #ccc;
+  border-radius: 9999px;
+  background-color: white;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radioLabel input[type="radio"]:checked,
+.customCheckbox:checked {
+  background-color: #2f6846;
+  border-color: #2f6846;
+}
+
+.radioLabel input[type="radio"]:checked::after,
+.customCheckbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+.checkboxVertical {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.radioLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.dropdownWrapper {
+  position: relative;
+  width: 100%;
+ 
 }
 
-.selectInput {
-  width: 100%;
+.dropdownTrigger {
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 0.375rem;
-  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chevron {
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+
+.dropdown {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.dropdownItem {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0;
 }
 
 .tagContainer {
@@ -54,33 +121,20 @@
 .tag {
   background-color: #e0e7ff;
   color: #3730a3;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
-}
-
-.buttonGroup {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.prevButton {
-  border: 1px solid #ccc;
-  background-color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-}
-
-.nextButton {
-  background-color: #2f6846;
-  color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
+.removeBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #555;
   cursor: pointer;
 }

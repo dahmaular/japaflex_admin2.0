@@ -4,7 +4,12 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { EditorState, $getRoot } from "lexical";
+import {
+  EditorState,
+  $getRoot,
+  $getSelection,
+  $isRangeSelection,
+} from "lexical";
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
@@ -15,9 +20,9 @@ import {
 import { TOGGLE_LINK_COMMAND, LinkNode } from "@lexical/link";
 import { FORMAT_TEXT_COMMAND, FORMAT_ELEMENT_COMMAND } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-
 import styles from "./AdvertDetails.module.css";
 import { AdFormValues } from "./formik-types/formikTypes";
+import { useEffect, useState } from "react";
 
 interface AdvertDetailsProps {
   values: AdFormValues;
@@ -38,6 +43,22 @@ const editorConfig = {
 
 function Toolbar() {
   const [editor] = useLexicalComposerContext();
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+
+  useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+          setIsBold(selection.hasFormat("bold"));
+          setIsItalic(selection.hasFormat("italic"));
+          setIsUnderline(selection.hasFormat("underline"));
+        }
+      });
+    });
+  }, [editor]);
 
   const applyFormat = (format: "bold" | "italic" | "underline") => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, format);
@@ -69,13 +90,25 @@ function Toolbar() {
 
   return (
     <div className={styles.editorControls}>
-      <button type="button" onClick={() => applyFormat("bold")}>
+      <button
+        type="button"
+        onClick={() => applyFormat("bold")}
+        className={isBold ? styles.activeButton : ""}
+      >
         <b>B</b>
       </button>
-      <button type="button" onClick={() => applyFormat("italic")}>
+      <button
+        type="button"
+        onClick={() => applyFormat("italic")}
+        className={isItalic ? styles.activeButton : ""}
+      >
         <i>I</i>
       </button>
-      <button type="button" onClick={() => applyFormat("underline")}>
+      <button
+        type="button"
+        onClick={() => applyFormat("underline")}
+        className={isUnderline ? styles.activeButton : ""}
+      >
         <u>U</u>
       </button>
 
@@ -116,9 +149,6 @@ export default function TextEditor({
         <Toolbar />
         <RichTextPlugin
           contentEditable={<ContentEditable className={styles.editorInput} />}
-          placeholder={
-            <div className={styles.editorPlaceholder}>Write something...</div>
-          }
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />

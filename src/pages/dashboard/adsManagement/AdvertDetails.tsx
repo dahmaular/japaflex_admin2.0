@@ -29,7 +29,6 @@ export default function AdvertDetails({ values, setFieldValue }: Props) {
 
   return (
     <div className={styles.wrapper}>
-      {/* Media type options */}
       <div className={styles.mediaOptions}>
         {mediaOptions.map((option) => (
           <label
@@ -50,7 +49,6 @@ export default function AdvertDetails({ values, setFieldValue }: Props) {
         ))}
       </div>
 
-      {/* Title input */}
       <input
         type="text"
         placeholder="Title"
@@ -61,7 +59,6 @@ export default function AdvertDetails({ values, setFieldValue }: Props) {
 
       <TextEditor values={values} setFieldValue={setFieldValue} />
 
-      {/* Upload Areas by Media Type */}
       {selectedMedia === "Single Image" && (
         <label className={styles.uploadBox} htmlFor="single-upload">
           {values.upload ? (

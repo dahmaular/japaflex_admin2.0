@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./DurationComponent.module.css";
-import Button from "../../../ui/components/button/button";
 import { AdFormValues } from "./formik-types/formikTypes";
 
 interface AdvertDetailsProps {
@@ -30,16 +29,20 @@ export default function DurationComponent({
 
   return (
     <div className={styles.formContainer}>
-      <div className={styles.section}>
+      <div className={`${styles.section} ${styles.dropdownWrapper}`}>
         <label className={styles.label}>Select Number Of Days</label>
         <select
-          value={days}
-          onChange={(e) => setDays(e.target.value)}
+          value={values.days || ""}
+          onChange={(e) => setFieldValue("days", e.target.value)}
           className={styles.selectInput}
         >
           <option value="">Select Days</option>
           {daysOptions.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              className={styles.option}
+            >
               {option.label}
             </option>
           ))}
@@ -51,8 +54,8 @@ export default function DurationComponent({
         <input
           type="text"
           placeholder="Enter Amount"
-          value={budget}
-          onChange={(e) => setBudget(e.target.value)}
+          value={values.budget || ""}
+          onChange={(e) => setFieldValue("budget", e.target.value)}
           className={styles.textInput}
         />
       </div>
