@@ -1,0 +1,87 @@
+.analyticsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: 100%;
+  background-color: #f8fafc;
+}
+
+.debugInfo {
+  background: #e2e8f0;
+  color: #1e293b;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-family: monospace;
+  border: 1px solid #cbd5e1;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.chartsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.chartWrapper {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  min-height: 300px;
+  width: 100%;
+}
+
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Ensure charts are visible on smaller screens */
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .chartWrapper {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analyticsContainer {
+    padding: 1rem;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .mainGrid {
+    gap: 1rem;
+  }
+
+  .chartsColumn,
+  .sideCol {
+    gap: 1rem;
+  }
+
+  .chartWrapper {
+    padding: 1rem;
+  }
+}

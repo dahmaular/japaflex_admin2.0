@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #f1f3f4;
+  padding-bottom: 16px;
+}
+.subject {
+  font-size: 18px;
+  font-weight: 500;
+  color: #212529;
+}
+.meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #6c757d;
+  align-items: center;
+}
+.inboxLabel {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.sender {
+  font-weight: 500;
+  color: #212529;
+}
+.timestamp {
+  font-size: 12px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.iconBtn {
+  background: none;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+.iconBtn:focus, .iconBtn:hover {
+  background: #f1f3f4;
+}
