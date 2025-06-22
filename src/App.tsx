@@ -22,18 +22,23 @@ import CreateRoles from "./pages/dashboard/adminManagement/rolePer";
 import UserProfile from "./pages/dashboard/userManagement/userProfile";
 import AdsManagement from "./pages/dashboard/adsManagement/AdsManagement";
 import CreateAdd from "./pages/dashboard/adsManagement";
+import EmailPage from "./pages/dashboard/email";
+import AnalyticsPage from "./pages/dashboard/analytics";
+import GroupCommunitiesPage from "./pages/dashboard/group-communities";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<LoginPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-
+              <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
+              <Route path="/features/group-communities" element={<GroupCommunitiesPage />} />
               <Route
                 path="/user-management/all-users"
                 element={<UserManagement />}
@@ -84,7 +89,7 @@ function App() {
                 element={<div>System Settings</div>}
               />
 
-              <Route path="/communication/email" element={<div>Email</div>} />
+              <Route path="/communication/email" element={<EmailPage />} />
               <Route
                 path="/communication/notifications"
                 element={<div>Notifications</div>}
@@ -92,8 +97,6 @@ function App() {
               <Route path="/communication/chat" element={<div>Chat</div>} />
             </Route>
           </Route>
-
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

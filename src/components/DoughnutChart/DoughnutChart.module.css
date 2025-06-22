@@ -1,0 +1,47 @@
+.doughnutContainer {
+  position: relative;
+  width: 220px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.value {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+.label {
+  display: block;
+  font-size: 1rem;
+  color: #6b7280;
+}
+.legend {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+.legendLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+}

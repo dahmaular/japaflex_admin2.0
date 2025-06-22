@@ -223,12 +223,10 @@ const Sidebar: React.FC = () => {
               </div>
               <span>Content Management</span>
             </Link>
-          </li>
-
-          <li
-            className={`nav-item ${isPathActive("/analytics") ? "active" : ""}`}
+          </li>          <li
+            className={`nav-item ${isPathActive("/dashboard/analytics") ? "active" : ""}`}
           >
-            <Link to="/analytics" className="nav-item-main">
+            <Link to="/dashboard/analytics" className="nav-item-main">
               <div className="icon-container">
                 <img src={analytics} alt="Analytics" className="icon" />
               </div>

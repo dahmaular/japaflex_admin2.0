@@ -1,0 +1,73 @@
+.detailContainer {
+  padding: 32px 40px;
+  background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.body {
+  font-size: 15px;
+  color: #212529;
+  margin-top: 24px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.composeArea {
+  margin-top: 32px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.toolbarBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #212529;
+  transition: background 0.2s;
+}
+.toolbarBtn:focus, .toolbarBtn:hover {
+  background: #e3f2fd;
+}
+.composeInput {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 15px;
+  resize: vertical;
+  min-height: 60px;
+}
+.sendBtn {
+  align-self: flex-end;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s;
+}
+.sendBtn:hover {
+  background: #218838;
+}
+.errorMsg {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
