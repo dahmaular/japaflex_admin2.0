@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
- apiKey: "AIzaSyBMUvvkwm1vtVnD58wKbQ_38SAf1KOVgW8",
-  authDomain: "japaflex-system-prod.firebaseapp.com",
-  projectId: "japaflex-system-prod",
-  storageBucket: "japaflex-system-prod.firebasestorage.app",
-  messagingSenderId: "459874533903",
-  appId: "1:459874533903:web:c0817bdfadab60fd24d97a",
-  measurementId: "G-NG2KMZV1Q3"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
