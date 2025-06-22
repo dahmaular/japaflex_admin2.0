@@ -25,6 +25,7 @@ import CreateAdd from "./pages/dashboard/adsManagement";
 import EmailPage from "./pages/dashboard/email";
 import AnalyticsPage from "./pages/dashboard/analytics";
 import GroupCommunitiesPage from "./pages/dashboard/group-communities";
+import UserProfilePage from "./pages/dashboard/userManagement/user-profilePage";
 
 function App() {
   return (
@@ -38,7 +39,10 @@ function App() {
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
-              <Route path="/features/group-communities" element={<GroupCommunitiesPage />} />
+              <Route
+                path="/features/group-communities"
+                element={<GroupCommunitiesPage />}
+              />
               <Route
                 path="/user-management/all-users"
                 element={<UserManagement />}
@@ -54,6 +58,11 @@ function App() {
               <Route
                 path="/user-management/user-profile/:userId"
                 element={<UserProfile />}
+              />
+
+              <Route
+                path="/user-management/user-profilePage/:userId"
+                element={<UserProfilePage />}
               />
 
               <Route path="/admin-management" element={<AdminManagement />} />

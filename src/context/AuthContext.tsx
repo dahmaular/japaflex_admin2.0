@@ -44,16 +44,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       email,
       password
     );
-    console.log(
-      "Login successful:",
-      (await firebaseLogin?.user?.getIdTokenResult()).token
-    );
+    const idToken = await firebaseLogin.user.getIdToken();
+    localStorage.setItem("firebase_id_token", idToken);
     setUser(firebaseLogin.user);
     // onAuthStateChanged will update state
   };
 
   const logout = async () => {
     await signOut(auth);
+    localStorage.removeItem("firebase_id_token");
     // onAuthStateChanged will update state
   };
 

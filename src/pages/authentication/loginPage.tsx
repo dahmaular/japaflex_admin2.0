@@ -26,6 +26,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+    // navigate(from, { replace: true });
 
     try {
       if (email && password) {
@@ -33,10 +34,11 @@ const LoginPage: React.FC = () => {
         await login(email, password);
         // Get Firebase user and ID token
         const user = auth.currentUser;
+        console.log("Firebase user:", user?.getIdToken());
         const idToken = user ? await user.getIdToken() : null;
         if (!idToken) throw new Error("Could not get Firebase ID token");
         // Call backend admin/login endpoint
-        await adminLogin({ token: idToken }).unwrap();
+        await adminLogin().unwrap();
         navigate(from, { replace: true });
       } else {
         setError("Please enter both email and password");
@@ -145,7 +147,7 @@ const LoginPage: React.FC = () => {
           </div>
 
           <div className="footer">
-            <p>Japaflex © 2024. All right reserved</p>
+            <p>Japaflex © 2025. All right reserved</p>
           </div>
         </div>
       </div>
