@@ -1,27 +1,12 @@
 .adHeading {
-  margin: 0.5rem 0;
+  margin: 1rem 0;
 }
 
 .container {
   display: flex;
   height: 100vh;
   font-family: sans-serif;
-}
-
-.sidebarWrapper {
-  flex-basis: 35%;
-  max-width: 35%;
-  min-width: 240px;
-  display: flex;
-}
-
-.formWrapper {
-  flex-basis: 65%;
-  max-width: 65%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* background-color: red; */
 }
 
 .stepPanel {
@@ -52,7 +37,18 @@
   color: #000;
 }
 
-
+.bullet {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ##A1A1A9;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .active .bullet {
   border-color: #10BA93;
@@ -77,7 +73,6 @@
 .stepContent {
   display: flex;
   flex-direction: column;
-  
 }
 
 .stepHeading {
@@ -90,14 +85,13 @@
 .stepDescription {
   margin: 0;
   font-size: 0.85rem;
-  max-width: 30%;
   color: #777;
 }
 
 .form {
   flex: 1;
   max-width: 70%;
-  padding: 3rem;
+  padding: 2rem;
   background-color: #fff;
   overflow-y: auto;
    /* background-color: red; */

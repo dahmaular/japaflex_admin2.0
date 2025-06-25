@@ -22,17 +22,23 @@ export const apiSlice = createApi({
     }),
     getAllAdmin: builder.query<any, void>({
       query: () => ({
-        url: 'admin/login',
+        url: 'admin',
         method: 'GET',
       }),
     }),
     getAllUsers: builder.query<any, void>({
       query: () => ({
-        url: 'users?limit=200&page=1&sort=created_at%20desc',
+        url: 'users',
+        method: 'GET',
+      }),
+    }),
+    getUsersbyId: builder.query<any, {id: string |null}>({
+      query: ({id}) => ({
+        url: `users/${id}`,
         method: 'GET',
       }),
     }),
   }),
 });
 
-export const { useAdminLoginMutation, useGetAllAdminQuery, useGetAllUsersQuery } = apiSlice;
+export const { useAdminLoginMutation, useLazyGetUsersbyIdQuery, useGetAllAdminQuery, useGetAllUsersQuery } = apiSlice;

@@ -2,93 +2,117 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsersTable.css";
 
-interface User {
+export interface User {
   id: number;
-  avatarBg: string;
+  photo_url: string;
   initial: string;
-  fullName: string;
+  full_name: string;
   email: string;
   username: string;
   dateOfBirth: string;
   gender: string;
-  dateCreated: string;
+  created_at: string;
+  role?: string | null; // Optional role field
 }
 
-const UsersTable: React.FC = () => {
-  const navigate = useNavigate();
+interface UsersTableProps {
+  users?: User[];
+}
 
-  const users: User[] = [
-    {
-      id: 1,
-      avatarBg: "#FF5252",
-      initial: "J",
-      fullName: "Jane Smith",
-      email: "jane@japaflex.com",
-      username: "jane20",
-      dateOfBirth: "06-03-1990",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 2,
-      avatarBg: "#4CAF50",
-      initial: "C",
-      fullName: "Cody Fisher",
-      email: "cody@japaflex.com",
-      username: "Codyfishpie",
-      dateOfBirth: "24-05-1973",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 3,
-      avatarBg: "#00BCD4",
-      initial: "J",
-      fullName: "Jane Cooper",
-      email: "cooper@japaflex.com",
-      username: "Coops12",
-      dateOfBirth: "12-10-1994",
-      gender: "Female",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 4,
-      avatarBg: "#9C27B0",
-      initial: "K",
-      fullName: "Kristin Watson",
-      email: "kristinw@japaflex.com",
-      username: "Krist3ne",
-      dateOfBirth: "14-08-1996",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 5,
-      avatarBg: "#673AB7",
-      initial: "D",
-      fullName: "Dianne Russell",
-      email: "dianne@japaflex.com",
-      username: "Theavenger",
-      dateOfBirth: "08-01-1989",
-      gender: "Female",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 6,
-      avatarBg: "#FFC107",
-      initial: "D",
-      fullName: "Darrell Steward",
-      email: "darrellsteward@gmail.com",
-      username: "Steward12",
-      dateOfBirth: "20-04-1992",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-  ];
+const mockUsers: User[] = [
+  {
+    id: 1,
+    photo_url: "#FF5252",
+    initial: "J",
+    full_name: "Jane Smith",
+    email: "jane@japaflex.com",
+    username: "jane20",
+    dateOfBirth: "06-03-1990",
+    gender: "Male",
+    created_at: "12-03-2024",
+  },
+  {
+    id: 2,
+    photo_url: "#4CAF50",
+    initial: "C",
+    full_name: "Cody Fisher",
+    email: "cody@japaflex.com",
+    username: "Codyfishpie",
+    dateOfBirth: "24-05-1973",
+    gender: "Male",
+    created_at: "12-03-2024",
+  },
+  {
+    id: 3,
+    photo_url: "#00BCD4",
+    initial: "J",
+    full_name: "Jane Cooper",
+    email: "cooper@japaflex.com",
+    username: "Coops12",
+    dateOfBirth: "12-10-1994",
+    gender: "Female",
+    created_at: "12-03-2024",
+  },
+  {
+    id: 4,
+    photo_url: "#9C27B0",
+    initial: "K",
+    full_name: "Kristin Watson",
+    email: "kristinw@japaflex.com",
+    username: "Krist3ne",
+    dateOfBirth: "14-08-1996",
+    gender: "Male",
+    created_at: "12-03-2024",
+  },
+  {
+    id: 5,
+    photo_url: "#673AB7",
+    initial: "D",
+    full_name: "Dianne Russell",
+    email: "dianne@japaflex.com",
+    username: "Theavenger",
+    dateOfBirth: "08-01-1989",
+    gender: "Female",
+    created_at: "12-03-2024",
+  },
+  {
+    id: 6,
+    photo_url: "#FFC107",
+    initial: "D",
+    full_name: "Darrell Steward",
+    email: "darrellsteward@gmail.com",
+    username: "Steward12",
+    dateOfBirth: "20-04-1992",
+    gender: "Male",
+    created_at: "12-03-2024",
+  },
+];
+
+const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
+  const navigate = useNavigate();
+  const data = users && users.length > 0 ? users : mockUsers;
+
+  console.log("UsersTable data:", data);
 
   const handleRowClick = (userId: number) => {
     navigate(`/user-management/user-profilePage/${userId}`);
   };
+
+  function formatDate(dateString: string) {
+    // Accepts 'DD-MM-YYYY' or ISO, returns 'Mon DD, YYYY'
+    let dateObj;
+    if (/\d{2}-\d{2}-\d{4}/.test(dateString)) {
+      const [day, month, year] = dateString.split("-");
+      dateObj = new Date(Number(year), Number(month) - 1, Number(day));
+    } else {
+      dateObj = new Date(dateString);
+    }
+    return dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
 
   return (
     <div className="users-table-wrapper">
@@ -108,10 +132,14 @@ const UsersTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {data.map((user) => (
             <tr
               key={user.id}
-              onClick={() => handleRowClick(user.id)}
+              onClick={() =>
+                user?.role === "admin" || user?.role === "super-admin"
+                  ? null
+                  : handleRowClick(user.id)
+              }
               style={{ cursor: "pointer" }}
             >
               <td
@@ -124,18 +152,18 @@ const UsersTable: React.FC = () => {
                 <div className="user-info">
                   <div
                     className="user-avatar"
-                    style={{ backgroundColor: user.avatarBg }}
+                    style={{ backgroundColor: user.photo_url, color: "#fff" }}
                   >
-                    {user.initial}
+                    {user.photo_url}
                   </div>
-                  <span>{user.fullName}</span>
+                  <span>{user.full_name}</span>
                 </div>
               </td>
               <td>{user.email}</td>
               <td>{user.username}</td>
-              <td>{user.dateOfBirth}</td>
-              <td>{user.gender}</td>
-              <td>{user.dateCreated}</td>
+              <td>{user.dateOfBirth ?? "N/A"}</td>
+              <td>{user.gender ?? "N/A"}</td>
+              <td>{formatDate(user.created_at)}</td>
               <td onClick={(e) => e.stopPropagation()}>
                 <button className="more-options">⋮</button>
               </td>

@@ -4,11 +4,16 @@ import StatCard from "./components/StatCard";
 import AnalyticsChart from "./components/AnalyticsChart";
 import UserAnalysisChart from "./components/UserAnalysisChart";
 import UsersTable from "./components/UsersTable";
+import { useGetAllUsersQuery } from "../../store/apiSlice";
 
 const Dashboard: React.FC = () => {
   const [activeTimeFilter, setActiveTimeFilter] = useState<"week" | "year">(
     "week"
   );
+
+  const { data, isLoading } = useGetAllUsersQuery();
+
+  console.log("Users", data);
 
   return (
     <>
