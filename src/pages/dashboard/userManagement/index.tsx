@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import UsersTable from "../components/UsersTable";
+import { useGetAllUsersQuery } from "../../../store/apiSlice";
 
-function Users() {
+const Users = () => {
   const [activeTimeFilter, setActiveTimeFilter] = useState<"week" | "year">(
     "week"
   );
+
+  const { data } = useGetAllUsersQuery();
+
+  console.log("Users data here", data);
 
   return (
     <>
@@ -35,17 +40,15 @@ function Users() {
             </button>
             <div className="time-filter">
               <button
-                className={`filter-btn ${
-                  activeTimeFilter === "week" ? "active" : ""
-                }`}
+                className={`filter-btn ${activeTimeFilter === "week" ? "active" : ""
+                  }`}
                 onClick={() => setActiveTimeFilter("week")}
               >
                 Week
               </button>
               <button
-                className={`filter-btn ${
-                  activeTimeFilter === "year" ? "active" : ""
-                }`}
+                className={`filter-btn ${activeTimeFilter === "year" ? "active" : ""
+                  }`}
                 onClick={() => setActiveTimeFilter("year")}
               >
                 Year
@@ -53,7 +56,7 @@ function Users() {
             </div>
           </div>
         </div>
-        <UsersTable />
+        <UsersTable users={data} />
       </div>
     </>
   );

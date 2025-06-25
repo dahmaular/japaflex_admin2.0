@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.toggleGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+.toggle {
+  background: #f3f4f6;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle.active {
+  background: #2563eb;
+  color: #fff;
+}

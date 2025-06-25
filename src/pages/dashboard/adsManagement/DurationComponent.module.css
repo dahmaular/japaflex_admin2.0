@@ -1,0 +1,83 @@
+
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.selectInput,
+.textInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.reachText {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 6rem;
+}
+
+.prevButton {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+}
+
+.option {
+  border: 2px solid white;
+  border: 2px solid red;
+}
+
+.nextButton {
+  background-color: #2f6846;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.dropdownWrapper {
+  position: relative;
+  width: 100%;
+ 
+}
+
+.selectInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='gray' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem; 
+}

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,21 +19,29 @@ import SuspendedUsers from "./pages/dashboard/userManagement/suspendedUsers";
 import CreateAdmin from "./pages/dashboard/adminManagement/createAdmin";
 import CreateRoles from "./pages/dashboard/adminManagement/rolePer";
 import UserProfile from "./pages/dashboard/userManagement/userProfile";
+import AdsManagement from "./pages/dashboard/adsManagement/AdsManagement";
+import CreateAdd from "./pages/dashboard/adsManagement";
+import EmailPage from "./pages/dashboard/email";
+import AnalyticsPage from "./pages/dashboard/analytics";
+import GroupCommunitiesPage from "./pages/dashboard/group-communities";
+import UserProfilePage from "./pages/dashboard/userManagement/user-profilePage";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Routes with DashboardLayout wrapper */}
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-
-              {/* User Management Routes */}
+              <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
+              <Route
+                path="/features/group-communities"
+                element={<GroupCommunitiesPage />}
+              />
               <Route
                 path="/user-management/all-users"
                 element={<UserManagement />}
@@ -52,7 +59,11 @@ function App() {
                 element={<UserProfile />}
               />
 
-              {/* Admin Management */}
+              <Route
+                path="/user-management/user-profilePage/:userId"
+                element={<UserProfilePage />}
+              />
+
               <Route path="/admin-management" element={<AdminManagement />} />
               <Route
                 path="/admin-management/create"
@@ -63,7 +74,6 @@ function App() {
                 element={<CreateRoles />}
               />
 
-              {/* Features Routes */}
               <Route
                 path="/features/group-communities"
                 element={<div>Group & Communities</div>}
@@ -71,11 +81,12 @@ function App() {
               <Route path="/features/hub" element={<div>Hub</div>} />
               <Route path="/features/forum" element={<div>Forum</div>} />
 
-              {/* Other main routes */}
+              <Route path="/ads-management" element={<CreateAdd />} />
               <Route
-                path="/ads-management"
-                element={<div>ADS Management</div>}
+                path="/ads-management/create"
+                element={<AdsManagement />}
               />
+
               <Route
                 path="/content-management"
                 element={<div>Content Management</div>}
@@ -86,8 +97,7 @@ function App() {
                 element={<div>System Settings</div>}
               />
 
-              {/* Communication Routes */}
-              <Route path="/communication/email" element={<div>Email</div>} />
+              <Route path="/communication/email" element={<EmailPage />} />
               <Route
                 path="/communication/notifications"
                 element={<div>Notifications</div>}
@@ -96,10 +106,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Redirect root to dashboard if authenticated, otherwise to login */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-          {/* Catch all for 404 */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

@@ -2,93 +2,47 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsersTable.css";
 
-interface User {
+export interface User {
   id: number;
-  avatarBg: string;
+  photo_url: string;
   initial: string;
-  fullName: string;
+  full_name: string;
   email: string;
   username: string;
   dateOfBirth: string;
   gender: string;
-  dateCreated: string;
+  created_at: string;
+  role?: string | null; // Optional role field
 }
 
-const UsersTable: React.FC = () => {
+interface UsersTableProps {
+  users?: User[];
+}
+
+const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const navigate = useNavigate();
 
-  const users: User[] = [
-    {
-      id: 1,
-      avatarBg: "#FF5252",
-      initial: "J",
-      fullName: "Jane Smith",
-      email: "jane@japaflex.com",
-      username: "jane20",
-      dateOfBirth: "06-03-1990",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 2,
-      avatarBg: "#4CAF50",
-      initial: "C",
-      fullName: "Cody Fisher",
-      email: "cody@japaflex.com",
-      username: "Codyfishpie",
-      dateOfBirth: "24-05-1973",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 3,
-      avatarBg: "#00BCD4",
-      initial: "J",
-      fullName: "Jane Cooper",
-      email: "cooper@japaflex.com",
-      username: "Coops12",
-      dateOfBirth: "12-10-1994",
-      gender: "Female",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 4,
-      avatarBg: "#9C27B0",
-      initial: "K",
-      fullName: "Kristin Watson",
-      email: "kristinw@japaflex.com",
-      username: "Krist3ne",
-      dateOfBirth: "14-08-1996",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 5,
-      avatarBg: "#673AB7",
-      initial: "D",
-      fullName: "Dianne Russell",
-      email: "dianne@japaflex.com",
-      username: "Theavenger",
-      dateOfBirth: "08-01-1989",
-      gender: "Female",
-      dateCreated: "12-03-2024",
-    },
-    {
-      id: 6,
-      avatarBg: "#FFC107",
-      initial: "D",
-      fullName: "Darrell Steward",
-      email: "darrellsteward@gmail.com",
-      username: "Steward12",
-      dateOfBirth: "20-04-1992",
-      gender: "Male",
-      dateCreated: "12-03-2024",
-    },
-  ];
+  console.log("UsersTable data:", users);
 
   const handleRowClick = (userId: number) => {
-    navigate(`user-management/user-profile/p${userId}`);
+    navigate(`/user-management/user-profilePage/${userId}`);
   };
+
+  function formatDate(dateString: string) {
+    // Accepts 'DD-MM-YYYY' or ISO, returns 'Mon DD, YYYY'
+    let dateObj;
+    if (/\d{2}-\d{2}-\d{4}/.test(dateString)) {
+      const [day, month, year] = dateString.split("-");
+      dateObj = new Date(Number(year), Number(month) - 1, Number(day));
+    } else {
+      dateObj = new Date(dateString);
+    }
+    return dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
 
   return (
     <div className="users-table-wrapper">
@@ -104,14 +58,18 @@ const UsersTable: React.FC = () => {
             <th>Date of Birth</th>
             <th>Gender</th>
             <th>Date Created</th>
-            <th></th>
+            <th />
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {users?.map((user) => (
             <tr
               key={user.id}
-              onClick={() => handleRowClick(user.id)}
+              onClick={() =>
+                user?.role === "admin" || user?.role === "super-admin"
+                  ? null
+                  : handleRowClick(user.id)
+              }
               style={{ cursor: "pointer" }}
             >
               <td
@@ -122,20 +80,15 @@ const UsersTable: React.FC = () => {
               </td>
               <td>
                 <div className="user-info">
-                  <div
-                    className="user-avatar"
-                    style={{ backgroundColor: user.avatarBg }}
-                  >
-                    {user.initial}
-                  </div>
-                  <span>{user.fullName}</span>
+                  <img src={user?.photo_url} alt="user-photo" height={30} width={30} className="user-avatar" />
+                  <span>{user.full_name}</span>
                 </div>
               </td>
               <td>{user.email}</td>
               <td>{user.username}</td>
-              <td>{user.dateOfBirth}</td>
-              <td>{user.gender}</td>
-              <td>{user.dateCreated}</td>
+              <td>{user.dateOfBirth ?? "N/A"}</td>
+              <td>{user.gender ?? "N/A"}</td>
+              <td>{formatDate(user.created_at)}</td>
               <td onClick={(e) => e.stopPropagation()}>
                 <button className="more-options">⋮</button>
               </td>

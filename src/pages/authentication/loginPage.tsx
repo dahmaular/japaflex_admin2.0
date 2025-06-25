@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { auth } from "../../firebase";
+import { useAdminLoginMutation } from "../../store/apiSlice";
 import "./LoginPage.css";
 import logoImage from "../../assets/logo.svg"; // Import the SVG file
 
@@ -15,6 +17,7 @@ const LoginPage: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [adminLogin] = useAdminLoginMutation();
 
   // Determine where to redirect after login
   const from = location.state?.from?.pathname || "/dashboard";
@@ -23,30 +26,34 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+    // navigate(from, { replace: true });
 
     try {
-      // In a real app, you would validate credentials with a backend API call
-      // For now, we'll simulate authentication with a timeout
       if (email && password) {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Mock authentication - in real world, validate against backend
-        // This is a placeholder - replace with actual authentication logic
-        const mockToken =
-          "mock-jwt-token-" + Math.random().toString(36).substr(2);
-
-        // Call the login function from AuthContext
-        login(mockToken);
-
-        // Redirect to dashboard or the originally requested page
+        // Firebase login
+        await login(email, password);
+        // Get Firebase user and ID token
+        const user = auth.currentUser;
+        console.log("Firebase user:", user?.getIdToken());
+        const idToken = user ? await user.getIdToken() : null;
+        if (!idToken) throw new Error("Could not get Firebase ID token");
+        // Call backend admin/login endpoint
+        await adminLogin().unwrap();
         navigate(from, { replace: true });
       } else {
         setError("Please enter both email and password");
       }
-    } catch (err) {
-      setError("Login failed. Please check your credentials.");
+    } catch (err: any) {
+      // Firebase or backend error handling
       console.error("Login error:", err);
+      let message = "Login failed. Please check your credentials.";
+      if (err.code === "auth/user-not-found") message = "User not found.";
+      if (err.code === "auth/wrong-password") message = "Incorrect password.";
+      if (err.code === "auth/invalid-email") message = "Invalid email address.";
+      if (err.status === 401 || err.status === 403)
+        message = "Unauthorized: Invalid admin credentials.";
+      if (err.data && err.data.message) message = err.data.message;
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +147,7 @@ const LoginPage: React.FC = () => {
           </div>
 
           <div className="footer">
-            <p>Japaflex © 2024. All right reserved</p>
+            <p>Japaflex © 2025. All right reserved</p>
           </div>
         </div>
       </div>
