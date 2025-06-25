@@ -2,62 +2,31 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserProfile from "./user-profile";
 import FeedPost from "./FeedPost";
-import { useLazyGetUsersbyIdQuery } from "../../../store/apiSlice";
-
-const posts = [
-  {
-    avatarUrl: "https://randomuser.me/api/portraits/men/11.jpg",
-    name: "Febsspp",
-    verified: true,
-    username: "febsspp",
-    time: "14 minutes ago",
-    location: "Dallas, Texas",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget urna eu neque tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget urna eu neque tincidunt fermentum.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    likes: "1.2k",
-    comments: 500,
-    shares: 20,
-  },
-  {
-    avatarUrl: "https://randomuser.me/api/portraits/men/11.jpg",
-    name: "Febsspp",
-    verified: true,
-    username: "febsspp",
-    time: "14 minutes ago",
-    location: "Dallas, Texas",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget urna eu neque tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget urna eu neque tincidunt fermentum.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    likes: "1.2k",
-    comments: 500,
-    shares: 20,
-  },
-];
+import { useLazyGetUserPostsQuery, useLazyGetUsersbyIdQuery } from "../../../store/apiSlice";
 
 type UserData = {
   photo_url?: string;
   full_name?: string;
   username?: string;
   bio?: string;
-
+  communities_count?: number;
+  posts_count?: number;
+  connections_count?: number;
+  media_count?: number;
   // Add other user properties as needed
 };
 
 const UserProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
-  console.log("userId:", userId);
 
   const [userData, setUserData] = React.useState<UserData | null>(null);
 
   const [getUsersbyId, { data, isLoading, error }] = useLazyGetUsersbyIdQuery();
+  const [getUserPosts, { data: posts }] = useLazyGetUserPostsQuery();
 
   const fetchUserById = async () => {
     try {
       const response = await getUsersbyId({ id: userId ?? null }).unwrap();
-      console.log("Fetched user data:", response);
       setUserData(response || null);
     } catch (err) {
       console.error("Error fetching user by ID:", err);
@@ -67,8 +36,11 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     if (userId) {
       fetchUserById();
+      getUserPosts(userId)
     }
-  }, [userId, getUsersbyId]);
+  }, [userId, getUsersbyId, getUserPosts]);
+
+  const { posts_count, communities_count, media_count, connections_count } = userData ?? {};
 
   return (
     <div style={{ background: "#f7f7f7", minHeight: "100vh" }}>
@@ -104,12 +76,12 @@ const UserProfilePage: React.FC = () => {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
           }
           tags={["Photography", "Model"]}
-          stats={{ connections: "50K", posts: 2, communities: 2, media: 20 }}
+          stats={{ connections: String(connections_count ?? 0), posts: posts_count ?? 0, communities: communities_count ?? 0, media: media_count ?? 0 }}
           onSuspend={() => alert("Suspend Account clicked")}
         />
       </div>
       <div style={{ maxWidth: 900, margin: "0 auto", marginTop: 18 }}>
-        {posts.map((post, idx) => (
+        {posts?.map((post: any, idx: number) => (
           <FeedPost key={idx} {...post} />
         ))}
       </div>

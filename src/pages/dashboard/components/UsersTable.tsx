@@ -19,80 +19,10 @@ interface UsersTableProps {
   users?: User[];
 }
 
-const mockUsers: User[] = [
-  {
-    id: 1,
-    photo_url: "#FF5252",
-    initial: "J",
-    full_name: "Jane Smith",
-    email: "jane@japaflex.com",
-    username: "jane20",
-    dateOfBirth: "06-03-1990",
-    gender: "Male",
-    created_at: "12-03-2024",
-  },
-  {
-    id: 2,
-    photo_url: "#4CAF50",
-    initial: "C",
-    full_name: "Cody Fisher",
-    email: "cody@japaflex.com",
-    username: "Codyfishpie",
-    dateOfBirth: "24-05-1973",
-    gender: "Male",
-    created_at: "12-03-2024",
-  },
-  {
-    id: 3,
-    photo_url: "#00BCD4",
-    initial: "J",
-    full_name: "Jane Cooper",
-    email: "cooper@japaflex.com",
-    username: "Coops12",
-    dateOfBirth: "12-10-1994",
-    gender: "Female",
-    created_at: "12-03-2024",
-  },
-  {
-    id: 4,
-    photo_url: "#9C27B0",
-    initial: "K",
-    full_name: "Kristin Watson",
-    email: "kristinw@japaflex.com",
-    username: "Krist3ne",
-    dateOfBirth: "14-08-1996",
-    gender: "Male",
-    created_at: "12-03-2024",
-  },
-  {
-    id: 5,
-    photo_url: "#673AB7",
-    initial: "D",
-    full_name: "Dianne Russell",
-    email: "dianne@japaflex.com",
-    username: "Theavenger",
-    dateOfBirth: "08-01-1989",
-    gender: "Female",
-    created_at: "12-03-2024",
-  },
-  {
-    id: 6,
-    photo_url: "#FFC107",
-    initial: "D",
-    full_name: "Darrell Steward",
-    email: "darrellsteward@gmail.com",
-    username: "Steward12",
-    dateOfBirth: "20-04-1992",
-    gender: "Male",
-    created_at: "12-03-2024",
-  },
-];
-
 const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const navigate = useNavigate();
-  const data = users && users.length > 0 ? users : mockUsers;
 
-  console.log("UsersTable data:", data);
+  console.log("UsersTable data:", users);
 
   const handleRowClick = (userId: number) => {
     navigate(`/user-management/user-profilePage/${userId}`);
@@ -128,11 +58,11 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             <th>Date of Birth</th>
             <th>Gender</th>
             <th>Date Created</th>
-            <th></th>
+            <th />
           </tr>
         </thead>
         <tbody>
-          {data.map((user) => (
+          {users?.map((user) => (
             <tr
               key={user.id}
               onClick={() =>
@@ -150,12 +80,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               </td>
               <td>
                 <div className="user-info">
-                  <div
-                    className="user-avatar"
-                    style={{ backgroundColor: user.photo_url, color: "#fff" }}
-                  >
-                    {user.photo_url}
-                  </div>
+                  <img src={user?.photo_url} alt="user-photo" height={30} width={30} className="user-avatar" />
                   <span>{user.full_name}</span>
                 </div>
               </td>

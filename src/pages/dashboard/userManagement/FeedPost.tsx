@@ -1,28 +1,28 @@
 import React from "react";
 
 interface FeedPostProps {
-  avatarUrl: string;
+  photo_url: string;
   name: string;
-  verified?: boolean;
+  is_verified?: boolean;
   username: string;
   time: string;
   location: string;
   content: string;
-  imageUrl: string;
+  image_url: string[];
   likes: number | string;
   comments: number | string;
   shares: number | string;
 }
 
 const FeedPost: React.FC<FeedPostProps> = ({
-  avatarUrl,
+  photo_url,
   name,
-  verified,
+  is_verified,
   username,
   time,
   location,
   content,
-  imageUrl,
+  image_url,
   likes,
   comments,
   shares,
@@ -43,7 +43,7 @@ const FeedPost: React.FC<FeedPostProps> = ({
       style={{ display: "flex", alignItems: "flex-start", marginBottom: 10 }}
     >
       <img
-        src={avatarUrl}
+        src={photo_url}
         alt={`${name} avatar`}
         style={{
           width: 44,
@@ -57,7 +57,7 @@ const FeedPost: React.FC<FeedPostProps> = ({
       <div style={{ flex: 1 }}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <span style={{ fontWeight: 600, fontSize: 17 }}>{name}</span>
-          {verified && (
+          {is_verified && (
             <span
               style={{
                 display: "inline-block",
@@ -100,7 +100,7 @@ const FeedPost: React.FC<FeedPostProps> = ({
       {content}
     </div>
     <img
-      src={imageUrl}
+      src={image_url[0]}
       alt="Post"
       style={{
         width: "100%",

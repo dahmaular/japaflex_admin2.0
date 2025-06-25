@@ -18,6 +18,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   user: FirebaseUser | null;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,12 +29,14 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setIsAuthenticated(!!firebaseUser);
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -46,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     );
     const idToken = await firebaseLogin.user.getIdToken();
     localStorage.setItem("firebase_id_token", idToken);
-    setUser(firebaseLogin.user);
+    setIsAuthenticated(true);
     // onAuthStateChanged will update state
   };
 
@@ -57,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, loading, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
