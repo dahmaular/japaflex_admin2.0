@@ -1,0 +1,67 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.prev {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+}
+
+.prev:disabled {
+  opacity: 0.5;
+}
+
+.pageChange {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  margin-left: 4px;
+
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+
+  border-radius: 0.25rem;
+
+  border-width: 1px;
+  border-style: solid;
+  border-color: currentColor;
+}
+
+.notCurrent:hover {
+  background-color: #f7fafc;
+}
+
+.current {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+.page {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: #9CA3AF;
+}
+
+.next {
+  padding-left: 0.5rem; 
+  padding-right: 0.5rem; 
+  padding-top: 0.25rem; 
+  padding-bottom: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem; 
+  margin-left: 4px;
+}
+
+.next:disabled {
+  opacity: 0.5; 
+  cursor: not-allowed;
+}

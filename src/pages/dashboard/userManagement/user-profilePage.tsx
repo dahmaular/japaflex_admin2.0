@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserProfile from "./user-profile";
 import FeedPost from "./FeedPost";
-import { useLazyGetUserPostsQuery, useLazyGetUsersbyIdQuery } from "../../../store/apiSlice";
+import { useDeleteUserMutation, useLazyGetUserPostsQuery, useLazyGetUsersbyIdQuery } from "../../../store/apiSlice";
+import Loader from "../../../ui/Loader";
+import { toast } from "sonner";
 
 type UserData = {
   photo_url?: string;
@@ -21,8 +23,9 @@ const UserProfilePage: React.FC = () => {
 
   const [userData, setUserData] = React.useState<UserData | null>(null);
 
-  const [getUsersbyId, { data, isLoading, error }] = useLazyGetUsersbyIdQuery();
-  const [getUserPosts, { data: posts }] = useLazyGetUserPostsQuery();
+  const [getUsersbyId, { isLoading }] = useLazyGetUsersbyIdQuery();
+  const [getUserPosts, { data: posts, isLoading: fetchingPosts }] = useLazyGetUserPostsQuery();
+  const [deleteUser, { isLoading: deletingUser, isSuccess, error }] = useDeleteUserMutation();
 
   const fetchUserById = async () => {
     try {
@@ -40,7 +43,23 @@ const UserProfilePage: React.FC = () => {
     }
   }, [userId, getUsersbyId, getUserPosts]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error((error as any)?.data?.error || 'An error occured')
+    }
+  }, [error]);
+
+  const onDelete = () => {
+    if (userId) {
+      deleteUser(userId)
+    }
+  }
+
   const { posts_count, communities_count, media_count, connections_count } = userData ?? {};
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <div style={{ background: "#f7f7f7", minHeight: "100vh" }}>
@@ -78,10 +97,13 @@ const UserProfilePage: React.FC = () => {
           tags={["Photography", "Model"]}
           stats={{ connections: String(connections_count ?? 0), posts: posts_count ?? 0, communities: communities_count ?? 0, media: media_count ?? 0 }}
           onSuspend={() => alert("Suspend Account clicked")}
+          onDelete={onDelete}
         />
       </div>
       <div style={{ maxWidth: 900, margin: "0 auto", marginTop: 18 }}>
-        {posts?.map((post: any, idx: number) => (
+        {(!fetchingPosts && !posts?.length) ? <>
+          <h2 style={{ margin: '0 auto', textAlign: 'center' }}>No Posts Found</h2>
+        </> : posts?.map((post: any, idx: number) => (
           <FeedPost key={idx} {...post} />
         ))}
       </div>

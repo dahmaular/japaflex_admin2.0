@@ -1,15 +1,32 @@
 import { useState } from "react";
 import UsersTable from "../components/UsersTable";
 import { useGetAllUsersQuery } from "../../../store/apiSlice";
+import Pagination from "../components/pagination";
+import Loader from "../../../ui/Loader";
 
 const Users = () => {
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 10,
+  })
   const [activeTimeFilter, setActiveTimeFilter] = useState<"week" | "year">(
     "week"
   );
 
-  const { data } = useGetAllUsersQuery();
+  const { data, isLoading } = useGetAllUsersQuery(params);
 
-  console.log("Users data here", data);
+  const onPageChange = (page: number) => {
+    setParams(prev => ({
+      ...prev,
+      page
+    }))
+  }
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
 
   return (
     <>
@@ -57,6 +74,12 @@ const Users = () => {
           </div>
         </div>
         <UsersTable users={data} />
+
+        <Pagination
+          totalPages={100}
+          currentPage={params.page}
+          onPageChange={onPageChange}
+        />
       </div>
     </>
   );
