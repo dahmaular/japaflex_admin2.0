@@ -14,6 +14,8 @@ interface UserProfileProps {
     media: number;
   };
   onSuspend?: () => void;
+  onDelete?: () => void;
+
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({
@@ -24,6 +26,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   bio,
   tags,
   stats,
+  onDelete,
   onSuspend,
 }) => (
   <div
@@ -93,22 +96,43 @@ const UserProfile: React.FC<UserProfileProps> = ({
           </div>
         </div>
       </div>
-      <button
-        onClick={onSuspend}
-        style={{
-          background: "#E74C3C",
-          color: "#fff",
-          border: "none",
-          borderRadius: 8,
-          padding: "12px 28px",
-          fontSize: 16,
-          fontWeight: 500,
-          cursor: "pointer",
-          boxShadow: "0 1px 1px #eee",
-        }}
-      >
-        Suspend Account
-      </button>
+
+      <div>
+
+        <button
+          onClick={onSuspend}
+          style={{
+            background: "#E74C3C",
+            color: "#fff",
+            border: "none",
+            borderRadius: 8,
+            padding: "12px 28px",
+            fontSize: 16,
+            fontWeight: 500,
+            cursor: "pointer",
+            boxShadow: "0 1px 1px #eee",
+          }}
+        >
+          Suspend Account
+        </button>
+        <button
+          onClick={onDelete}
+          style={{
+            background: "#E74C3C",
+            color: "#fff",
+            border: "none",
+            borderRadius: 8,
+            padding: "12px 28px",
+            fontSize: 16,
+            fontWeight: 500,
+            cursor: "pointer",
+            boxShadow: "0 1px 1px #eee",
+            marginLeft: 10
+          }}
+        >
+          Delete Account
+        </button>
+      </div>
     </div>
     <div
       style={{

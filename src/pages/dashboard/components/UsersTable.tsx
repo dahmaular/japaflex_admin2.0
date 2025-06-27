@@ -22,8 +22,6 @@ interface UsersTableProps {
 const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const navigate = useNavigate();
 
-  console.log("UsersTable data:", users);
-
   const handleRowClick = (userId: number) => {
     navigate(`/user-management/user-profilePage/${userId}`);
   };

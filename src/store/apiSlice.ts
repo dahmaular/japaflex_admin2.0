@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { parseQueryParams } from "../helpers";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -27,11 +28,14 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
-    getAllUsers: builder.query<any, void>({
-      query: () => ({
-        url: "users",
-        method: "GET",
-      }),
+    getAllUsers: builder.query<any, Record<string, any>>({
+      query: (params) => {
+        const queryParams = parseQueryParams(params);
+        return {
+          url: `users?${queryParams}`,
+          method: "GET",
+        };
+      },
     }),
     getUsersbyId: builder.query<any, { id: string | null }>({
       query: ({ id }) => ({
@@ -45,6 +49,19 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
+    assignAdmin: builder.mutation<any, any>({
+      query: (body) => ({
+        url: "admin/assign",
+        method: "POST",
+        body,
+      }),
+    }),
+    deleteUser: builder.mutation<any, string>({
+      query: (id: string) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -54,4 +71,6 @@ export const {
   useGetAllAdminQuery,
   useGetAllUsersQuery,
   useLazyGetUserPostsQuery,
+  useAssignAdminMutation,
+  useDeleteUserMutation
 } = apiSlice;
