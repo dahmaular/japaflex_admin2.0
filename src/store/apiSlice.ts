@@ -65,6 +65,16 @@ export const apiSlice = createApi({
         },
       }),
     }),
+
+    updateUserStatus: builder.mutation<any, { id: string; status: string }>({
+      query: (params: { id: string; status: string }) => ({
+        url: `users/${params.id}/status`,
+        method: "PATCH",
+        body: {
+          status: params.status,
+        },
+      }),
+    }),
   }),
 });
 
@@ -76,4 +86,5 @@ export const {
   useLazyGetUserPostsQuery,
   useAssignAdminMutation,
   useDeleteUserMutation,
+  useUpdateUserStatusMutation,
 } = apiSlice;

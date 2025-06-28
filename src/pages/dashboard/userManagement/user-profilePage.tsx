@@ -54,12 +54,13 @@ const UserProfilePage: React.FC = () => {
       toast.error((error as any)?.data?.error || "An error occured");
     }
     if (isDeleted) {
-      toast.success("User deleted successfully");
+      toast.success("Account deleted successfully");
       setTimeout(
         () => (window.location.href = "/user-management/all-users"),
         2000
       );
     }
+
   }, [error, isDeleted]);
 
   const onDelete = () => {
@@ -67,6 +68,8 @@ const UserProfilePage: React.FC = () => {
       deleteUser(userId);
     }
   };
+
+  const onSuspend = () => {}
 
   const { posts_count, communities_count, media_count, connections_count } =
     userData ?? {};
@@ -115,7 +118,7 @@ const UserProfilePage: React.FC = () => {
             communities: communities_count ?? 0,
             media: media_count ?? 0,
           }}
-          onSuspend={() => alert("Suspend Account clicked")}
+          onSuspend={onSuspend}
           onDelete={onDelete}
           loading={deletingUser}
         />

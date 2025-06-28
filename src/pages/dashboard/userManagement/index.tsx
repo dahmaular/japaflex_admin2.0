@@ -75,11 +75,11 @@ const Users = () => {
         </div>
         <UsersTable users={data} />
 
-        <Pagination
+        {data?.length && <Pagination
           totalPages={100}
           currentPage={params.page}
           onPageChange={onPageChange}
-        />
+        />}
       </div>
     </>
   );
