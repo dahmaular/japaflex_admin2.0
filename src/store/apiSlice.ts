@@ -60,6 +60,9 @@ export const apiSlice = createApi({
       query: (id: string) => ({
         url: `users/${id}`,
         method: "DELETE",
+        body: {
+          hard_delete: true,
+        },
       }),
     }),
   }),
@@ -72,5 +75,5 @@ export const {
   useGetAllUsersQuery,
   useLazyGetUserPostsQuery,
   useAssignAdminMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
 } = apiSlice;
