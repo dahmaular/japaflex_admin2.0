@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsersTable.css";
+import { useUpdateUserStatusMutation } from "../../../store/apiSlice";
+import { toast } from "sonner";
 
 export interface User {
   id: number;
@@ -21,6 +23,9 @@ interface UsersTableProps {
 
 const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const navigate = useNavigate();
+  const [openMenuUserId, setOpenMenuUserId] = useState<number | null>(null);
+
+  const [updateUserStatus, { isSuccess, error, isLoading, data }] = useUpdateUserStatusMutation();
 
   const handleRowClick = (userId: number) => {
     navigate(`/user-management/user-profilePage/${userId}`);
@@ -40,6 +45,24 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
       month: "short",
       day: "numeric",
     });
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Operation successful')
+    }
+    if (error) {
+      toast.error((error as any)?.data?.error || 'Operation failed')
+    }
+  }, [isSuccess, error])
+
+  const toggleMenu = (e: React.MouseEvent, userId: number) => {
+    e.stopPropagation(); // prevent row click
+    setOpenMenuUserId((prev) => (prev === userId ? null : userId));
+  };
+
+  const handleUserStatusUpdate = (id: string, status: string) => {
+    updateUserStatus({ id, status })
   }
 
   return (
@@ -88,7 +111,18 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.gender ?? "N/A"}</td>
               <td>{formatDate(user.created_at)}</td>
               <td onClick={(e) => e.stopPropagation()}>
-                <button className="more-options">⋮</button>
+                <button className="more-options"
+                  onClick={(e) => toggleMenu(e, user.id)}>⋮</button>
+                {openMenuUserId === user.id && (
+                  <ul className="options-container">
+                    <li onClick={() => handleUserStatusUpdate(String(user.id), 'suspended')}>
+                      Suspend User
+                    </li>
+                    <li>
+                      Ban User
+                    </li>
+                  </ul>
+                )}
               </td>
             </tr>
           ))}

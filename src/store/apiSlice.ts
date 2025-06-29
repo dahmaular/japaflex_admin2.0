@@ -60,6 +60,19 @@ export const apiSlice = createApi({
       query: (id: string) => ({
         url: `users/${id}`,
         method: "DELETE",
+        body: {
+          hard_delete: true,
+        },
+      }),
+    }),
+
+    updateUserStatus: builder.mutation<any, { id: string; status: string }>({
+      query: (params: { id: string; status: string }) => ({
+        url: `users/${params.id}/status`,
+        method: "PATCH",
+        body: {
+          status: params.status,
+        },
       }),
     }),
   }),
@@ -72,5 +85,6 @@ export const {
   useGetAllUsersQuery,
   useLazyGetUserPostsQuery,
   useAssignAdminMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useUpdateUserStatusMutation,
 } = apiSlice;

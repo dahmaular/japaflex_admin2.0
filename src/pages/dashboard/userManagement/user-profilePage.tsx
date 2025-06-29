@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UserProfile from "./user-profile";
 import FeedPost from "./FeedPost";
-import { useDeleteUserMutation, useLazyGetUserPostsQuery, useLazyGetUsersbyIdQuery } from "../../../store/apiSlice";
+import {
+  useDeleteUserMutation,
+  useLazyGetUserPostsQuery,
+  useLazyGetUsersbyIdQuery,
+} from "../../../store/apiSlice";
 import Loader from "../../../ui/Loader";
 import { toast } from "sonner";
 
@@ -24,8 +28,10 @@ const UserProfilePage: React.FC = () => {
   const [userData, setUserData] = React.useState<UserData | null>(null);
 
   const [getUsersbyId, { isLoading }] = useLazyGetUsersbyIdQuery();
-  const [getUserPosts, { data: posts, isLoading: fetchingPosts }] = useLazyGetUserPostsQuery();
-  const [deleteUser, { isLoading: deletingUser, isSuccess, error }] = useDeleteUserMutation();
+  const [getUserPosts, { data: posts, isLoading: fetchingPosts }] =
+    useLazyGetUserPostsQuery();
+  const [deleteUser, { isLoading: deletingUser, isSuccess: isDeleted, error }] =
+    useDeleteUserMutation();
 
   const fetchUserById = async () => {
     try {
@@ -39,26 +45,37 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
     if (userId) {
       fetchUserById();
-      getUserPosts(userId)
+      getUserPosts(userId);
     }
   }, [userId, getUsersbyId, getUserPosts]);
 
   useEffect(() => {
     if (error) {
-      toast.error((error as any)?.data?.error || 'An error occured')
+      toast.error((error as any)?.data?.error || "An error occured");
     }
-  }, [error]);
+    if (isDeleted) {
+      toast.success("Account deleted successfully");
+      setTimeout(
+        () => (window.location.href = "/user-management/all-users"),
+        2000
+      );
+    }
+
+  }, [error, isDeleted]);
 
   const onDelete = () => {
     if (userId) {
-      deleteUser(userId)
+      deleteUser(userId);
     }
-  }
+  };
 
-  const { posts_count, communities_count, media_count, connections_count } = userData ?? {};
+  const onSuspend = () => {}
+
+  const { posts_count, communities_count, media_count, connections_count } =
+    userData ?? {};
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -95,17 +112,29 @@ const UserProfilePage: React.FC = () => {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
           }
           tags={["Photography", "Model"]}
-          stats={{ connections: String(connections_count ?? 0), posts: posts_count ?? 0, communities: communities_count ?? 0, media: media_count ?? 0 }}
-          onSuspend={() => alert("Suspend Account clicked")}
+          stats={{
+            connections: String(connections_count ?? 0),
+            posts: posts_count ?? 0,
+            communities: communities_count ?? 0,
+            media: media_count ?? 0,
+          }}
+          onSuspend={onSuspend}
           onDelete={onDelete}
+          loading={deletingUser}
         />
       </div>
       <div style={{ maxWidth: 900, margin: "0 auto", marginTop: 18 }}>
-        {(!fetchingPosts && !posts?.length) ? <>
-          <h2 style={{ margin: '0 auto', textAlign: 'center' }}>No Posts Found</h2>
-        </> : posts?.map((post: any, idx: number) => (
-          <FeedPost key={idx} {...post} />
-        ))}
+        {!fetchingPosts && !posts?.length ? (
+          <>
+            <h2 style={{ margin: "0 auto", textAlign: "center" }}>
+              No Posts Found
+            </h2>
+          </>
+        ) : (
+          posts?.map((post: any, idx: number) => (
+            <FeedPost key={idx} {...post} />
+          ))
+        )}
       </div>
     </div>
   );
