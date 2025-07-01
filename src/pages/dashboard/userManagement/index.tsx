@@ -8,6 +8,7 @@ const Users = () => {
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
+    status: 'active'
   })
   const [activeTimeFilter, setActiveTimeFilter] = useState<"week" | "year">(
     "week"
