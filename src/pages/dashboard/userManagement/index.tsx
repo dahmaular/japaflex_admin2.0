@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import UsersTable from "../components/UsersTable";
 import { useGetAllUsersQuery } from "../../../store/apiSlice";
 import Pagination from "../components/pagination";
 import Loader from "../../../ui/Loader";
+import { debounce } from 'lodash';
 
 const Users = () => {
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
-    status: 'active'
+    status: 'active',
+    search: ''
   })
+  const [searchTerm, setSearchTerm] = useState('')
   const [activeTimeFilter, setActiveTimeFilter] = useState<"week" | "year">(
     "week"
   );
@@ -23,11 +26,22 @@ const Users = () => {
     }))
   }
 
-  if (isLoading) {
-    return (
-      <Loader />
-    )
-  }
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      setParams(prev => ({
+        ...prev,
+        page: 1,
+        search: value.trim(),
+      }));
+    }, 2000),
+    []
+  );
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
 
   return (
     <>
@@ -40,6 +54,13 @@ const Users = () => {
         <div className="section-header">
           <h2>Users</h2>
           <div className="actions">
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search by name or email"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
             <button className="filter-action">
               <span>Filter</span>
               <svg
@@ -74,7 +95,9 @@ const Users = () => {
             </div>
           </div>
         </div>
-        <UsersTable users={data} />
+
+        {isLoading && <Loader />}
+        {(!isLoading && data.length) && <UsersTable users={data} />}
 
         {data?.length && <Pagination
           totalPages={100}

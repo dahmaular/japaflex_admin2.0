@@ -33,7 +33,7 @@ const UserProfilePage: React.FC = () => {
     useLazyGetUserPostsQuery();
   const [deleteUser, { isLoading: deletingUser, isSuccess: isDeleted, error }] =
     useDeleteUserMutation();
-  const [updateUserStatus, { isSuccess, error: suspendError, data }] = useUpdateUserStatusMutation();
+  const [updateUserStatus, { isSuccess: isSuspended, error: suspendError, data }] = useUpdateUserStatusMutation();
 
   const fetchUserById = async () => {
     try {
@@ -52,7 +52,7 @@ const UserProfilePage: React.FC = () => {
   }, [userId, getUsersbyId, getUserPosts]);
 
   useEffect(() => {
-    if (error) {
+    if (error || suspendError) {
       toast.error((error as any)?.data?.error || "An error occured");
     }
     if (isDeleted) {
@@ -63,7 +63,15 @@ const UserProfilePage: React.FC = () => {
       );
     }
 
-  }, [error, isDeleted]);
+    if (isDeleted || isSuspended) {
+      toast.success("Account suspended successfully");
+      setTimeout(
+        () => (window.location.href = "/user-management/all-users"),
+        2000
+      );
+    }
+
+  }, [error, isDeleted, isSuspended, suspendError]);
 
   const onDelete = () => {
     if (userId) {
@@ -75,7 +83,7 @@ const UserProfilePage: React.FC = () => {
     if (userId) {
       updateUserStatus({
         id: userId,
-        status: 'flagged'
+        status: 'suspended'
       })
     }
   }
